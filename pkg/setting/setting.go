@@ -2,9 +2,21 @@ package setting
 
 import (
 	"log"
+	"time"
 
 	"github.com/go-ini/ini"
 )
+
+// Server collection field
+type Server struct {
+	RunMode      string
+	HttpPort     int
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+}
+
+// ServerSetting coment
+var ServerSetting = &Server{}
 
 // Database collection field
 type Database struct {
@@ -32,6 +44,10 @@ func Setup() {
 	}
 
 	mapTo("database", DatabaseSetting)
+	mapTo("server", ServerSetting)
+
+	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
+	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
 }
 
 func mapTo(section string, v interface{}) {
